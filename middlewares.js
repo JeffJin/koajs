@@ -9,10 +9,10 @@ export const responseTime = async (ctx, next) => {
   console.log('x-response-time before next', ctx.body);
   const start = Date.now();
   await next();
+  // throw new Error('x-response-time error');
   const ms = Date.now() - start;
   ctx.set('X-Response-Time', `${ms}ms`);
   ctx.body = { ...ctx.body, responseTime: `${ms}ms`};
-
   console.log('x-response-time after next', ctx.body);
 };
 

@@ -1,3 +1,5 @@
+const http = require('http');
+const https = require('https');
 const Koa = require('koa');
 const KeyGrip = require('Keygrip');
 const { logger, responseTime, respond } = require('./middlewares');
@@ -12,12 +14,18 @@ app.use(logger)
 .use(responseTime)
 .use(respond);
 
-function callSomeFunction () {
+function setCurrentContext (data) {
   console.log('callSomeFunction', app.response.body);
-  app.currentContext = {} /* ctx of the middleware above */
+  app.currentContext = {...data} /* ctx of the middleware above */
 }
 app.use(async (ctx, next) => {
-  callSomeFunction()
+  setCurrentContext({data: 'empty'})
 });
 
-app.listen(3003);
+app.on('error', (err, ctx) => {
+  console.error('server error', err, ctx)
+});
+
+// app.listen(3003);
+http.createServer(app.callback()).listen(3000);
+https.createServer(app.callback()).listen(3001);

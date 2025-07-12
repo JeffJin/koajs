@@ -2,5 +2,8 @@
   "dependencies": {
     "keygrip": "^1.1.0",
     "koa": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
